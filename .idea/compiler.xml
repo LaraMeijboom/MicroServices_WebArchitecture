@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="config-service" />
+        <module name="microservicio-viaje" />
+        <module name="microservicio-mantenimiento" />
+        <module name="microservicio-eureka" />
+        <module name="microservicio-gateway" />
+        <module name="microservicio-usuarioCuenta" />
+        <module name="microservicio-monopatin" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="MicroServices_WebArchitecture" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="MicroServices_WebArchitecture" options="-parameters" />
+      <module name="config-service" options="-parameters" />
+      <module name="microservicio-eureka" options="-parameters" />
+      <module name="microservicio-gateway" options="-parameters" />
+      <module name="microservicio-mantenimiento" options="-parameters" />
+      <module name="microservicio-monopatin" options="-parameters" />
+      <module name="microservicio-usuarioCuenta" options="-parameters" />
+      <module name="microservicio-viaje" options="-parameters" />
+    </option>
+  </component>
+</project>
