@@ -1,0 +1,471 @@
+openapi: 3.0.1
+info:
+  title: microservicio-monopatin
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: monopatin
+paths:
+  /api/paradas/id/{id_parada}:
+    get:
+      tags:
+        - parada-controller
+      operationId: getParada
+      parameters:
+        - name: id_parada
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ParadaDTO'
+    put:
+      tags:
+        - parada-controller
+      operationId: updateParada
+      parameters:
+        - name: id_parada
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Parada'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Parada'
+  /api/monopatines/id/{id}:
+    put:
+      tags:
+        - monopatin-controller
+      operationId: updateMonopatin
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Monopatin'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Monopatin'
+  /api/monopatines/id/{id}/habilitado/{valor}:
+    put:
+      tags:
+        - monopatin-controller
+      operationId: updateHabilitadoMonopatin
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: valor
+          in: path
+          required: true
+          schema:
+            type: boolean
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/paradas:
+    get:
+      tags:
+        - parada-controller
+      operationId: getParadas
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ParadaDTO'
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+    post:
+      tags:
+        - parada-controller
+      operationId: addParada
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Parada'
+        required: true
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Parada'
+  /api/monopatines:
+    get:
+      tags:
+        - monopatin-controller
+      operationId: getMonopatines
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MonopatinDTO'
+    post:
+      tags:
+        - monopatin-controller
+      operationId: addMonopatin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Monopatin'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Monopatin'
+  /api/paradas/monopatines/posX/{posX}/posY/{posY}:
+    get:
+      tags:
+        - parada-controller
+      operationId: getMonopatinesParada
+      parameters:
+        - name: posX
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: posY
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MonopatinDTO'
+  /api/monopatines/reporte/kilometros:
+    get:
+      tags:
+        - monopatin-controller
+      operationId: getMonopatinesReporteKilometros
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MonopatinDTO'
+  /api/monopatines/monopatinesEnOperacion:
+    get:
+      tags:
+        - monopatin-controller
+      operationId: getMonopatinesEnOperacion
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: integer
+                  format: int64
+  /api/monopatines/monopatinesCercanos/posX/{posX}/posY/{posY}/radio/{radio}:
+    get:
+      tags:
+        - monopatin-controller
+      operationId: getMonopatinesCercanos
+      parameters:
+        - name: posX
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: posY
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: radio
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MonopatinDTO'
+  /api/monopatines/id/{id_monopatin}:
+    get:
+      tags:
+        - monopatin-controller
+      operationId: getMonopatin
+      parameters:
+        - name: id_monopatin
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MonopatinDTO'
+  /api/paradas/id/{idParada}:
+    delete:
+      tags:
+        - parada-controller
+      operationId: deleteParada
+      parameters:
+        - name: idParada
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/monopatines/id/{idMonopatin}:
+    delete:
+      tags:
+        - monopatin-controller
+      operationId: deleteMonopatin
+      parameters:
+        - name: idMonopatin
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+components:
+  schemas:
+    Parada:
+      type: object
+      properties:
+        id_parada:
+          type: integer
+          format: int32
+        permitida:
+          type: boolean
+        ubicacionX:
+          type: integer
+          format: int32
+        ubicacionY:
+          type: integer
+          format: int32
+    Monopatin:
+      type: object
+      properties:
+        id_monopatin:
+          type: integer
+          format: int32
+        estaActivo:
+          type: boolean
+        habilitado:
+          type: boolean
+        kilometrosTotales:
+          type: number
+          format: double
+        tiempo_uso_total:
+          type: integer
+          format: int32
+        ubicacionX:
+          type: integer
+          format: int32
+        ubicacionY:
+          type: integer
+          format: int32
+    ParadaDTO:
+      type: object
+      properties:
+        id_parada:
+          type: integer
+          format: int32
+        permitida:
+          type: boolean
+        ubicacionX:
+          type: integer
+          format: int32
+        ubicacionY:
+          type: integer
+          format: int32
+    MonopatinDTO:
+      type: object
+      properties:
+        id_monopatin:
+          type: integer
+          format: int32
+        estaActivo:
+          type: boolean
+        habilitado:
+          type: boolean
+        kilometrosTotales:
+          type: number
+          format: double
+        tiempo_uso_total:
+          type: integer
+          format: int32
+        ubicacionX:
+          type: integer
+          format: int32
+        ubicacionY:
+          type: integer
+          format: int32

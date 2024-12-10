@@ -1,0 +1,77 @@
+openapi: 3.0.1
+info:
+  title:  Microservicio-Gateway
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Gateway
+paths:
+  /api/user:
+    post:
+      tags:
+        - user-controller
+      operationId: saveUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/authenticate:
+    post:
+      tags:
+        - jwt-controller
+      operationId: authorize
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JWTToken'
+components:
+  schemas:
+    UserDTO:
+      required:
+        - authorities
+        - password
+        - username
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        authorities:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    LoginDTO:
+      required:
+        - password
+        - username
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    JWTToken:
+      type: object
+      properties:
+        id_token:
+          type: string

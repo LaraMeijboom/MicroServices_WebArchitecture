@@ -1,0 +1,352 @@
+openapi: 3.0.1
+info:
+  title: microservicio-viaje
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: viajes
+paths:
+  /api/viajes/id/{idViaje}:
+    put:
+      tags:
+        - viaje-controller
+      operationId: updateViaje
+      parameters:
+        - name: idViaje
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Viaje'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/viajes:
+    get:
+      tags:
+        - viaje-controller
+      operationId: getAllViajes
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ViajeDTO'
+    post:
+      tags:
+        - viaje-controller
+      operationId: saveViaje
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Viaje'
+        required: true
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Viaje'
+  /api/pausas:
+    get:
+      tags:
+        - pausa-controller
+      operationId: getPausas
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PausaDTO'
+    post:
+      tags:
+        - pausa-controller
+      operationId: addPausa
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pausa'
+        required: true
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Pausa'
+  /api/viajes/totalFacturadoEntre/anio/{anio}/mes1/{mes1}/mes2/{mes2}:
+    get:
+      tags:
+        - viaje-controller
+      operationId: getFacturadoEntre
+      parameters:
+        - name: anio
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: mes1
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: mes2
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int32
+  /api/viajes/monopatinesMasViajesPorAnio/cant/{cant}/anio/{anio}:
+    get:
+      tags:
+        - viaje-controller
+      operationId: getMonopatinesMasViajesPorAnio
+      parameters:
+        - name: cant
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: anio
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ViajeDTO'
+  /api/viajes/idMonopatin/{id}/tiempoSinPausa:
+    get:
+      tags:
+        - viaje-controller
+      operationId: getTiempoPausaMonopatin
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int64
+  /api/viajes/id/{id}:
+    get:
+      tags:
+        - viaje-controller
+      operationId: getViajeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ViajeDTO'
+  /api/viajes/{id}:
+    delete:
+      tags:
+        - viaje-controller
+      operationId: deleteViaje
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Bearer token
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    Viaje:
+      type: object
+      properties:
+        idViaje:
+          type: integer
+          format: int32
+        idUsuario:
+          type: integer
+          format: int32
+        idMonopatin:
+          type: integer
+          format: int32
+        idParada:
+          type: integer
+          format: int32
+        fechaInicio:
+          type: string
+          format: date-time
+        fechaFin:
+          type: string
+          format: date-time
+        kmRecorridos:
+          type: number
+          format: float
+        costo:
+          type: number
+          format: float
+    Pausa:
+      type: object
+      properties:
+        idPausa:
+          type: integer
+          format: int64
+        idViaje:
+          type: integer
+          format: int64
+        tiempo:
+          type: integer
+          format: int64
+    ViajeDTO:
+      type: object
+      properties:
+        idViaje:
+          type: integer
+          format: int64
+        idUsuario:
+          type: integer
+          format: int64
+        idMonopatin:
+          type: integer
+          format: int64
+        idParada:
+          type: integer
+          format: int64
+        fechaInicio:
+          type: string
+          format: date-time
+        fechaFin:
+          type: string
+          format: date-time
+        kmRecorridos:
+          type: number
+          format: float
+        costo:
+          type: number
+          format: float
+    PausaDTO:
+      type: object
+      properties:
+        idPausa:
+          type: integer
+          format: int64
+        idViaje:
+          type: integer
+          format: int64
+        tiempo:
+          type: integer
+          format: int64
